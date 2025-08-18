@@ -20,10 +20,10 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - run: terraform -chdir=terraform init
-      - run: terraform -chdir=terraform validate
-      - run: terraform -chdir=terraform plan -input=false
-      - run: terraform -chdir=terraform apply -auto-approve -input=false
+      - run: terraform init
+      - run: terraform validate
+      - run: terraform plan -input=false
+      - run: terraform apply -auto-approve -input=false
 
       - name: Terraform Outputs
         run: terraform output -json
