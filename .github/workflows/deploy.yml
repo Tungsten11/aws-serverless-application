@@ -1,0 +1,28 @@
+name: Deploy Serverless App
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - run: terraform -chdir=terraform init
+      - run: terraform -chdir=terraform validate
+      - run: terraform -chdir=terraform plan -input=false
+      - run: terraform -chdir=terraform apply -auto-approve -input=false
+
+      - name: Terraform Outputs
+        run: terraform output -json
