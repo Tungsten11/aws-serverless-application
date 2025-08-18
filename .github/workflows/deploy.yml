@@ -25,7 +25,7 @@ jobs:
         working-directory: ./terraform
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -lock=false
+        run: terraform apply -auto-approve
         working-directory: ./terraform
 
       - name: Terraform Outputs
