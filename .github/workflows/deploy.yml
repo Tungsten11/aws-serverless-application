@@ -24,7 +24,19 @@ jobs:
         run: terraform init
         working-directory: ./Terraform
 
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./Terraform
+
+      - name: Terraform Plan
+        env:
+          TF_VAR_budget_alert_email: ${{ secrets.BUDGET_ALERT_EMAIL }}
+        run: terraform plan -input=false
+        working-directory: ./Terraform
+
       - name: Terraform Apply
+        env:
+          TF_VAR_budget_alert_email: ${{ secrets.BUDGET_ALERT_EMAIL}}
         run: terraform apply -auto-approve
         working-directory: ./Terraform
 
