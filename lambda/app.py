@@ -29,7 +29,7 @@ def lambda_handler(event, context):
 
     elif method == "DELETE":
         body = json.loads(event["body"])
-        table.delete_item(Item={"id": body["id"], "value": body["value"]})
+        table.delete_item(Key={"id": body["id"], "value": body["value"]})
         return {
             "statusCode": 200,
             "body": json.dumps({"message": "Items Deleted!"})
