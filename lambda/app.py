@@ -8,7 +8,7 @@ table = dynamodb.Table(TABLE_NAME)
 
 def lambda_handler(event, context):
     # For HTTP API v2
-    method = event.get("requestContext", {}).get("http", {}).get("method")
+    method = event.get("requestContext",{}).get("httpMethod")
 
     if method == "POST":
         body = json.loads(event["body"])
