@@ -7,7 +7,8 @@ dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table(TABLE_NAME)
 
 def lambda_handler(event, context):
-    method = event["requestContext"]["http"]["method"]
+    # For HTTP API v2
+    method = event.get("requestContext", {}).get("http", {}).get("method")
 
     if method == "POST":
         body = json.loads(event["body"])
@@ -19,12 +20,13 @@ def lambda_handler(event, context):
 
     elif method == "GET":
         item_id = event.get("queryStringParameters", {}).get("id")
-        if not item_id:
-            return {"statusCode": 400, "body": json.dumps({"error": "Missing id"})}
         response = table.get_item(Key={"id": item_id})
         return {
             "statusCode": 200,
             "body": json.dumps(response.get("Item", {}))
         }
 
-    return {"statusCode": 400, "body": json.dumps({"error": "Invalid request"})}
+    return {
+        "statusCode": 400,
+        "body": json.dumps({"error": "Invalid request"})
+    }
