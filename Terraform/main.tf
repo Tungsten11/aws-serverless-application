@@ -1,3 +1,14 @@
+terraform {
+  backend "s3" {
+    bucket         = "my-terraform-state-bucket-v9"
+    key            = "serverless-app/terraform.tfstate"
+    region         = "ap-southeast-1"
+    dynamodb_table = "terraform-locks-v9"
+    encrypt        = true
+  }
+}
+
+
 # Package Lambda
 data "archive_file" "lambda_zip" {
   type        = "zip"
