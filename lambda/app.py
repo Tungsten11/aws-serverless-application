@@ -7,7 +7,7 @@ dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table(TABLE_NAME)
 
 def lambda_handler(event, context):
-    method = event.get("requestContext", {}).get("http", {}).get("method")
+    method = event["requestContext"]["http"]["method"]
     
     if method == "POST":
         body_str = event.get("body")
