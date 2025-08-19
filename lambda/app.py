@@ -6,29 +6,25 @@ TABLE_NAME = os.environ.get("TABLE_NAME", "ItemsTable")
 dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table(TABLE_NAME)
 
-
 def lambda_handler(event, context):
-    # Get HTTP method (works for HTTP API v2)
-    method = event.get("requestContext", {}).get("http", {}).get("method", "")
+    method = event["requestContext"]["http"]["method"]
 
     if method == "POST":
-        if not event.get("body"):
-            return {"statusCode": 400, "body": json.dumps({"error": "Missing body"})}
-
         body = json.loads(event["body"])
-        if "id" not in body or "value" not in body:
-            return {"statusCode": 400, "body": json.dumps({"error": "Missing id or value"})}
-
         table.put_item(Item={"id": body["id"], "value": body["value"]})
-        return {"statusCode": 200, "body": json.dumps({"message": "Item added"})}
+        return {
+            "statusCode": 200,
+            "body": json.dumps({"message": "Item added"})
+        }
 
     elif method == "GET":
-        params = event.get("queryStringParameters") or {}
-        item_id = params.get("id")
+        item_id = event.get("queryStringParameters", {}).get("id")
         if not item_id:
-            return {"statusCode": 400, "body": json.dumps({"error": "Missing id parameter"})}
-
+            return {"statusCode": 400, "body": json.dumps({"error": "Missing id"})}
         response = table.get_item(Key={"id": item_id})
-        return {"statusCode": 200, "body": json.dumps(response.get("Item", {}))}
+        return {
+            "statusCode": 200,
+            "body": json.dumps(response.get("Item", {}))
+        }
 
     return {"statusCode": 400, "body": json.dumps({"error": "Invalid request"})}
