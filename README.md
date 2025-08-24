@@ -26,6 +26,9 @@ A fully automated serverless application that demonstrates the use of IaC, CI/CD
 
 **Architecture Diagram**
 
-![serverless-project](https://github.com/user-attachments/assets/d83dfb36-058c-4af7-9d26-696617fe5362)
+![serverless-project](https://github.com/user-attachments/assets/85ac0b91-0325-4ec3-90c9-2b2ecea1dae7)
+
+
+
 
 
